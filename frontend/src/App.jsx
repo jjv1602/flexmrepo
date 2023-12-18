@@ -11,7 +11,7 @@ import RegisterPg from './Components/AuthPg/RegisterPg';
 import { ChakraProvider } from '@chakra-ui/react'
 import ProfilePg from './Components/ProfilePg/ProfilePg';
 function App() {
-
+// Background design added in App.css
   return (
     <ChakraProvider>
     <BrowserRouter>
