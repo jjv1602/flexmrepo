@@ -7,7 +7,7 @@ const {authUser,registerUser,generateRefreshtoken}=require('../Controllers/userC
 // if user goes to api/users/ - it is register page
 
 router.route('/').post(registerUser);
-router.route('/auth').get(authUser);
+router.route('/auth').post(authUser);
 router.route('/refresh').post(generateRefreshtoken);
 
 

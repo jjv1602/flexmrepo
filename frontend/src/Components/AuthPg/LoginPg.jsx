@@ -7,39 +7,43 @@ import { useToast } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom';
 import { Link } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
+import { CircularProgress} from '@chakra-ui/react'
 import axios from 'axios';
 const LoginPg = () => {
   const toast = useToast();
   const [show, setShow] = useState(false)
   const handleClick = () => setShow(!show)
   const navigate = useNavigate();
-  const [password, setP] = useState();
+  const [pwd, setP] = useState();
   const [email, setE] = useState();
+  const [loading,setLoading]=useState(false);
   const submitHandler = async (par) => {
+    setLoading(true);
     par.preventDefault();
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
-
-      const { data } = await axios.post(
-        "/api/users/login",
-        { email, password },
-        config
-      );
-
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      navigate("/design");
-
-    } catch (error) {
-      console.log(error);
-      toast({
-        title: `Incorrect Password`,
-        isClosable: true,
-      })
-    }
+      try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+          },
+        };
+  
+        const { data } = await axios.post(
+          "/api/users/auth",
+          { email, pwd },
+          config
+        );
+        setLoading(false);
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        navigate("/");
+  
+      } catch (error) {
+        console.log(error.message);
+        toast({
+          title:error.message,
+          isClosable: true,
+        })
+        setLoading(false);
+      }
   }
   const regscreen=()=>{
     navigate("/register");
@@ -47,27 +51,27 @@ const LoginPg = () => {
   return (
     <div className={st.par}>
       <Card
-        direction={{ base: 'column', sm: 'row' }}
+        direction={{ base: 'column', lg:'row' }}
         overflow='hidden'
         variant='outline'
-        w='80vw'
-        h='50vh'
+        w={{ base: '90vw', lg: '80vw' }}
         className={st.card}
       >
         <div className={st.leftcard}>
           <Heading as='h3' size='lg'>
-            LinkTree
+            FitnessTree
           </Heading>
-
-          <Text>Grow Your Business with Us </Text>
-          <Text> Directly design the UI of your domain </Text>
+          
+          <Text>Empower Your Fitness Journey</Text>
 
         </div>
 
         <Stack >
-          <CardBody textAlign='left' w='40vw'>
+          <CardBody textAlign='left'  w={{ base: '90vw', lg: '40vw' }}>
             <Heading className={st.text} fontSize='4vh'>Login </Heading>
             <br></br>
+            {loading && <CircularProgress isIndeterminate color='green.300' />}
+
             <InputGroup size='md'>
 
               <Input

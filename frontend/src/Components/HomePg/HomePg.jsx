@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const HomePg = () => {
+  useEffect(()=>{
+    const userloggedin=localStorage.getItem('userInfo');
+  },[]);
   return (
     <div>
-      
+      HOME PAGE
     </div>
   )
 }

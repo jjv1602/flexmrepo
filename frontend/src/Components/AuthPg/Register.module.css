@@ -37,7 +37,7 @@
 }
 @media (max-width:992px){
     .par{
-        height:120vh;
+        height:100vh;
         width: 100vw;
         background-image: url('../../assets/authbg/authbg.jpg');
         background-repeat: no-repeat;

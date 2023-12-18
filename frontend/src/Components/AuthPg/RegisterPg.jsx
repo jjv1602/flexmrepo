@@ -9,18 +9,21 @@ import axios from 'axios';
 import { Link } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { FaBirthdayCake } from "react-icons/fa";
+import { CircularProgress} from '@chakra-ui/react'
 const RegisterPg = () => {
   const [show, setShow] = useState(false);
   const [fname, setFName] = useState();
   const [lname, setLName] = useState();
   const [age, setAge] = useState();
   const [email, setE] = useState();
-  const [password, setPwd] = useState();
+  const [pwd, setPwd] = useState();
+  const [loading,setLoading]=useState(false);
   const navigate = useNavigate();
   const ageError= age<18 || age>65;
   const handleClick = () => setShow(!show)
 
   const submitHandler = async (par) => {
+    setLoading(true);
     par.preventDefault();
     try {
       const config = {
@@ -31,15 +34,16 @@ const RegisterPg = () => {
 
       const { data } = await axios.post(
         "/api/users",
-        { name, email, password },
+        { fname, lname, email, pwd },
         config
       );
-
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      navigate('/');
+      setLoading(false);
+      navigate('/login');
+      
 
     } catch (error) {
-      console.log(error.response);
+      console.log(error.message);
+      setLoading(false);
     }
   }
   const logscreen = () => {
@@ -69,6 +73,7 @@ const RegisterPg = () => {
           <CardBody textAlign='left' w={{ base: '90vw', lg: '40vw' }}>
             <Heading className={st.text} fontSize='4vh'>Register  </Heading>
             <br></br>
+            {loading && <CircularProgress isIndeterminate color='green.300' />}
             <InputGroup size='md'>
               <Input
                 pr='4.5rem'
@@ -139,9 +144,6 @@ const RegisterPg = () => {
             </InputGroup>
             <br></br>
             {!ageError && <Button variant='solid' colorScheme='blue' onClick={submitHandler}>
-              Submit
-            </Button>}
-            {ageError && <Button variant='solid' isDisabled='true' colorScheme='blue' onClick={submitHandler}>
               Submit
             </Button>}
             <Link isExternal ml={'3vw'} textDecoration={'underline'} onClick={logscreen}>
