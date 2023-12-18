@@ -5,12 +5,14 @@ nav{
     background: var(--color-primary);
     display: grid; 
     place-items: center;
-    position: fixed; /*commnt this to see hiden layers*/
+    /* position: fixed; commnt this to see hiden layers */
     top: 0;
     left: 0;
     z-index: 99; /* makes sure it sit on all items*/
     color: white;
     font-family: 'Poppins', sans-serif;
+    position: relative;
+    z-index: 2;
 }
 
 /* Only show on medium and small screens */

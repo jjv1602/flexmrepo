@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import st from './home.module.css';
+import TopPg from './TopPg/TopPg';
+import Values from './Values/Values';
 const HomePg = () => {
   const navigate = useNavigate();
   useEffect(()=>{
@@ -13,7 +15,9 @@ const HomePg = () => {
   return (
     <>
     <Navbar></Navbar>
-    <div className={st.par}>asdmmmm</div>
+    <br></br>
+    <TopPg></TopPg>
+    <Values></Values>
     </>
   )
 }
