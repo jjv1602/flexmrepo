@@ -3,7 +3,6 @@ const db = require("../config/db");
 const generateToken = require('../util/generateToken');
 const cookieparser = require('cookie-parser');
 
-
 const addBatch = asyncHandler(async (req, res) => {
     const { start, end, mx, trainer_id } = req.body;
     try {
@@ -14,7 +13,7 @@ const addBatch = asyncHandler(async (req, res) => {
         }
 
         // When adding keep avaiable seats= maximum_seats
-        await db.query('Insert into batches(starttime,endtime,max_seats,available_seats,trainer_id) values($1,$2,$3,$4)', [start, end, mx, mx, trainer_id]);
+        await db.query('Insert into batches(starttime,endtime,max_seats,available_seats,trainer_id) values($1,$2,$3,$4,$5)', [start, end, mx, mx, trainer_id]);
         res.status(200).json({
             start: start,
             end: end,
@@ -26,7 +25,7 @@ const addBatch = asyncHandler(async (req, res) => {
 });
 const getBatch = asyncHandler(async (req, res) => {
     try {
-        const { data } = await db.query("Select * from batches");
+        const data  = await db.query("Select * from batches");
         res.status(200).json(data);
     } catch (e) { res.json(e.message) }
 });

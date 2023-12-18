@@ -6,8 +6,8 @@ const {getBatch,addBatch,deleteBatch,updateBatch}=require('../Controllers/batchC
 
 // if user goes to api/users/ - it is register page
 
-router.route('/getBatches').get(getBatch);
-router.route('/addBatch').post(addBatch);
+router.route('/getbatches').get(getBatch);
+router.route('/addbatch').post(addBatch);
 
 
 

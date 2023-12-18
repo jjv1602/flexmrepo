@@ -13,7 +13,7 @@ const addBooking = asyncHandler(async (req, res) => {
             throw new Error('Batch Clashing Cannot Complete Booking');
         }
 
-        const { data } = await db.query('Insert into bookings(user_id,batch_id) values($1,$2) Returning *', [user_id, batch_id]);
+        const data  = await db.query('Insert into bookings(user_id,batch_id) values($1,$2) Returning *', [user_id, batch_id]);
         res.status(200).json({
             booking_id: data.rows[0].id,
             user_id: data.rows[0].user_id,
@@ -23,7 +23,7 @@ const addBooking = asyncHandler(async (req, res) => {
     catch (e) { res.json(e.message) }
 });
 const deleteBooking = asyncHandler(async (req, res) => {
-    const { id } = req.body;
+    const id  = req.params.id;
     try {
         await db.query('Delete from bookings where id=$1', { id });
         res.status(200).json("DELETED SUCCESSFULLY");
@@ -31,10 +31,10 @@ const deleteBooking = asyncHandler(async (req, res) => {
 });
 
 const getBookingByUserId = asyncHandler(async (req, res) => {
-    const { user_id } = req.params.id;
+    const { user_id } = req.params.userid;
     try {
         // or can be const {data}
-        const data=await db.query("Select * from bookings bk JOIN batches b on bk.batch_id= b.batch_id");
+        const data=await db.query("Select * from bookings bk JOIN batches b on bk.batch_id= b.id");
         res.json(data.rows);
 
     } catch (e) { res.json(e.message) }

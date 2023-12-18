@@ -6,8 +6,8 @@ const {addBooking, deleteBooking,getBookingByUserId}=require('../Controllers/boo
 
 // if user goes to api/users/ - it is register page
 
-router.route('/:id').get(getBookingByUserId);
-router.route('/add').get(addBooking);
+router.route('/:userid').get(getBookingByUserId);
+router.route('/add').post(addBooking);
 router.route('/deletebking').post(deleteBooking);
 
 
