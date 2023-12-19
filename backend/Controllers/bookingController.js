@@ -25,7 +25,7 @@ const addBooking = asyncHandler(async (req, res) => {
 const deleteBooking = asyncHandler(async (req, res) => {
     const id  = req.params.id;
     try {
-        await db.query('Delete from bookings where id=$1', { id });
+        await db.query('Delete from bookings where user_id=$1', { id });
         res.status(200).json("DELETED SUCCESSFULLY");
     } catch (e) { res.json(e.message) }
 });

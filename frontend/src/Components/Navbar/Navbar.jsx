@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { IoIosMenu,IoIosClose  } from "react-icons/io";
 import { links } from '../data';
-import { Link ,NavLink} from "react-router-dom";
+import { Link ,NavLink,useNavigate} from "react-router-dom";
 import './navbar.css';
 const Navbar = () => {
     const [isNavShowing, setIsNavShowing] = useState(false);
+    const navigate=useNavigate();
     const handleNavToggle = () => {
         return setIsNavShowing((prevVAlue) => {
             return !prevVAlue;
         });
     };
+    const logout=()=>{
+        localStorage.removeItem('userInfo');
+        navigate('/login');
+    }
     useEffect(() => { console.log(links) }, []);
     return (
         <nav>
@@ -34,6 +39,7 @@ const Navbar = () => {
                             </li>
                         );
                     })}
+                    <li onClick={logout} style={{cursor:'pointer'}}>Logout</li>
                 </ul>
                 <button onClick={handleNavToggle} className="nav__toggle-btn">
                     {isNavShowing ? <IoIosClose /> : <IoIosMenu  />}

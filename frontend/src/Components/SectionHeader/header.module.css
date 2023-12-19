@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 .header {
     height: 20rem;
     overflow: hidden;
@@ -28,6 +29,7 @@
     margin: 0 auto;
     text-align: center;
     color: black;
+    font-family: 'Poppins';
 }
 .header__content2 {
     position: relative;
@@ -35,10 +37,16 @@
     margin: 0 auto;
     text-align: center;
     color: white;
+    font-family: 'Poppins';
 }
 
 .header__content h2 {
     margin-bottom: 1rem;
+    font-size: 7vh;
+}
+.header__content2 h2 {
+    margin-bottom: 1rem;
+    font-size: 7vh;
 }
 
 .header__content p {

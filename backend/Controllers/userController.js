@@ -8,19 +8,21 @@ const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 const registerUser = asyncHandler(async (req, res) => {
-    const { fname, lname, email, pwd } = req.body;
+    const { fname, lname, email, pwd, age } = req.body;
     try {
         const { rows } = await db.query('Select * from users where email=$1', [email]);
         if (rows.length > 0) {
             throw new Error('User Already Exists');
         }
         const hashpwd = await bcrypt.hash(pwd, 12);
-        await db.query('Insert into users(fname,lname,email,pwd) values($1,$2,$3,$4)', [fname, lname, email, hashpwd]);
+        await db.query('Insert into users(fname,lname,email,pwd,age) values($1,$2,$3,$4)', [fname, lname, email, hashpwd, age]);
+
         res.status(200).json({
             email: email,
             pwd: hashpwd,
             fname: fname,
-            lname: lname
+            lname: lname,
+            age: age
         })
     } catch (e) {
         res.status(409).json(e.message);
@@ -37,6 +39,7 @@ const authUser = asyncHandler(async (req, res) => {
         }
 
         const isEqual = await bcrypt.compare(pwd, user.rows[0].pwd);
+
         if (!isEqual) {
             throw new Error('Password is incorrect!');
         }
@@ -48,13 +51,25 @@ const authUser = asyncHandler(async (req, res) => {
             userId: user.rows[0].id, username: user.rows[0].email,
         }, process.env.TOKEN_SECRET, { expiresIn: '1d' });
 
+        const totalbatch = await db.query('select * from bookings where user_id=$1', [user.rows[0].id]);
+        console.log(totalbatch);
+        const batchenrolled = totalbatch.rows.length;
         res
             .cookie('refreshToken', refreshToken, {
                 httpOnly: true,
                 sameSite: 'None', secure: true,
             })
             .header('authorization', accessToken)
-            .status(200).json({ userId: user.rows[0].id, accesstoken: accessToken, refreshToken: refreshToken });
+            .status(200).json({
+                userId: user.rows[0].id,
+                email: user.rows[0].email,
+                age: user.rows[0].age,
+                fname: user.rows[0].fname,
+                lname: user.rows[0].lname,
+                accesstoken: accessToken,
+                refreshToken: refreshToken,
+                batches: batchenrolled
+            });
 
 
 
@@ -63,6 +78,15 @@ const authUser = asyncHandler(async (req, res) => {
     }
 });
 
+const updateDetails = asyncHandler(async (req, res) => {
+    const { email, fname, lname, age } = req.body;
+    try {
+        const data = await db.query('Update users set fname=$1,lname=$2,age=$3 where email=$4 Returning *', [fname, lname, age, email]);
+        res.status(200).json(data.rows[0]);
+    } catch (e) {
+        res.status(409).json(e.message);
+    }
+})
 const generateRefreshtoken = asyncHandler(async (req, res) => {
     const refreshToken = req.cookies['refreshToken'];
     if (!refreshToken) {
@@ -87,4 +111,4 @@ const generateRefreshtoken = asyncHandler(async (req, res) => {
 //   console.log(user.password);
 //   res.status(201).json("success");
 // })
-module.exports = { registerUser, authUser,generateRefreshtoken };
+module.exports = { registerUser, authUser, generateRefreshtoken, updateDetails };

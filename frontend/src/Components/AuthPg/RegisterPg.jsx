@@ -34,7 +34,7 @@ const RegisterPg = () => {
 
       const { data } = await axios.post(
         "/api/users",
-        { fname, lname, email, pwd },
+        { fname, lname, email, pwd,age },
         config
       );
       setLoading(false);

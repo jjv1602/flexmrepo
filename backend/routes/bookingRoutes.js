@@ -8,7 +8,7 @@ const {addBooking, deleteBooking,getBookingByUserId}=require('../Controllers/boo
 
 router.route('/:userid').get(getBookingByUserId);
 router.route('/add').post(addBooking);
-router.route('/deletebking').post(deleteBooking);
+router.route('/deletebking/:id').delete(deleteBooking);
 
 
 

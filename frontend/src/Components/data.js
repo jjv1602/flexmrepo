@@ -20,10 +20,7 @@ export const links = [
         name: "Profile",
         path: '/profile'
     },
-    {
-        name: "Logout",
-        path: '/logout'
-    },
+    
 ]
 
 export const values = [

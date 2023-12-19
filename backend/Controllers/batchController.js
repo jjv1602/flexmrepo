@@ -4,7 +4,7 @@ const generateToken = require('../util/generateToken');
 const cookieparser = require('cookie-parser');
 
 const addBatch = asyncHandler(async (req, res) => {
-    const { start, end, mx, trainer_id } = req.body;
+    const { start, end, mx, trainer_id,helptitle ,batchname} = req.body;
     try {
         // Checking for any clash in batches
         const { rows } = await db.query('Select * from batches where trainer_id=$1 AND starttime=$2', [trainer_id, start]);
@@ -13,7 +13,7 @@ const addBatch = asyncHandler(async (req, res) => {
         }
 
         // When adding keep avaiable seats= maximum_seats
-        await db.query('Insert into batches(starttime,endtime,max_seats,available_seats,trainer_id) values($1,$2,$3,$4,$5)', [start, end, mx, mx, trainer_id]);
+        await db.query('Insert into batches(starttime,endtime,max_seats,available_seats,trainer_id,helptitle,batchname) values($1,$2,$3,$4,$5,$6,$7)', [start, end, mx, mx, trainer_id,helptitle,batchname]);
         res.status(200).json({
             start: start,
             end: end,
@@ -25,8 +25,8 @@ const addBatch = asyncHandler(async (req, res) => {
 });
 const getBatch = asyncHandler(async (req, res) => {
     try {
-        const data  = await db.query("Select * from batches");
-        res.status(200).json(data);
+        const data  = await db.query("Select * FROM trainers INNER JOIN batches  ON batches.trainer_id=trainers.id ");
+        res.status(200).json(data.rows);
     } catch (e) { res.json(e.message) }
 });
 const deleteBatch = asyncHandler(async (req, res) => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../Navbar/Navbar'
 import st from './profile.module.css';
 import SectionHeader from '../SectionHeader/SectionHeader';
@@ -6,12 +6,31 @@ import HeaderImage from "../../assets/trainerbg/header_bg_5.jpg";
 import {
   Editable,
   EditableInput,
-  EditablePreview, Stack, Text
+  EditablePreview, Stack, Text, CircularProgress
 } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 import { Card, CardHeader, CardBody, CardFooter, Image } from '@chakra-ui/react'
 import { Button, FormControl, FormLabel, Input, InputGroup, InputLeftAddon, InputRightAddon, useDisclosure, Heading, useEditableControls, Flex, IconButton, ButtonGroup, useToast, Box, FormHelperText, StackDivider } from '@chakra-ui/react'
+import axios from 'axios';
 import { CheckIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
 const ProfilePg = () => {
+  const navigate = useNavigate();
+  const [fname, setF] = useState(JSON.parse(localStorage.getItem('userInfo')).fname);
+  const [lname, setL] = useState(JSON.parse(localStorage.getItem('userInfo')).lname);
+  const [age, setAge] = useState(JSON.parse(localStorage.getItem('userInfo')).age);
+  const [email, setEmail] = useState(JSON.parse(localStorage.getItem('userInfo')).email);
+  const [batch, setBatch] = useState();
+  const [loading, setLoading] = useState();
+  const toast = useToast();
+  function getLastDateOfMonth(year, month) {
+    // Create a date object for the next month's first day
+    const nextMonthFirstDay = new Date(year, month + 1, 1);
+
+    // Subtract one day to get the last day of the current month
+    const lastDayOfMonth = new Date(nextMonthFirstDay - 1);
+
+    return lastDayOfMonth.getDate();
+  }
   function EditableControls() {
     const {
       isEditing,
@@ -31,6 +50,118 @@ const ProfilePg = () => {
       </Flex>
     )
   }
+  const updateDetails = async () => {
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+      const { data } = await axios.put(
+        "/api/users/update",
+        { email, fname, lname, age },
+
+        config
+      );
+      const oldlocalstorage = JSON.parse(localStorage.getItem('userInfo'));
+      const updatedinfo = { ...oldlocalstorage, email: email, fname: fname, lname: lname, age: age };
+      localStorage.setItem('userInfo', JSON.stringify(updatedinfo));
+      setLoading(false);
+      toast({
+        title: "Updated Successfully",
+        isClosable: true,
+      })
+    } catch (error) {
+      console.log(error.message);
+      toast({
+        title: error.message,
+        isClosable: true,
+      })
+      setLoading(false);
+    }
+  }
+
+  const changeRequest = async () => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    const currentDay = currentDate.getDate();
+    if (currentDay != 30 || currentDay != 31) {
+      const lastDateOfMonth = getLastDateOfMonth(currentYear, currentMonth);
+      toast({
+        title: "Request not approved",
+        description: `You can only change during end of the month i.e on ${lastDateOfMonth} / ${currentMonth} / ${currentYear}`,
+        status: "error",
+        isClosable: true,
+      })
+    } else {
+      try {
+        const id = JSON.parse(localStorage.getItem('userInfo')).id;
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+          },
+        };
+
+        const { data } = await axios.delete(
+          "/api/booking/id",
+          config
+        );
+        toast({
+          title: "Success",
+          description: "Your Request is Successful You can now change the batch",
+          status: "success",
+          isClosable: true,
+          duration: 5000
+        })
+        navigate("/plans");
+      } catch (e) {
+        toast({
+          title: "Failed",
+          description: e.message,
+          status: "error",
+          isClosable: true,
+          duration: 5000
+        })
+      }
+    }
+  }
+
+  useEffect(() => {
+    const fetchbatch = async () => {
+      const bt = localStorage.getItem('batches');
+      console.log(bt);
+      if (bt == 1) {
+        try {
+          const id = JSON.parse(localStorage.getItem('userInfo')).id;
+          const config = {
+            headers: {
+              "Content-type": "application/json",
+            },
+          };
+
+          const { data } = await axios.get(
+            "/api/booking/id",
+            config
+          );
+          console.log(data[0]);
+          setBatch(data[0]);
+
+        } catch (e) {
+          toast({
+            title: "Failed",
+            description: e.message,
+            status: "error",
+            isClosable: true,
+            duration: 5000
+          })
+        }
+      }
+    }
+    fetchbatch();
+  }, [])
+
   return (
     <div>
       <Navbar></Navbar>
@@ -43,61 +174,61 @@ const ProfilePg = () => {
           <FormLabel color='gray.400' >Enter Email </FormLabel>
           <Editable
             textAlign='center'
-            defaultValue='Rasengan ⚡️'
-            fontSize='2xl'
+            defaultValue={email}
+            fontSize='md'
             isPreviewFocusable={false}
             isDisabled='true'
           >
             <EditablePreview border='solid 2px' borderColor={"white"} borderRadius={"1rem"} color={'white'} w={"100%"} />
             {/* Here is the custom input */}
           </Editable>
+          <Text color={'white'}>⚠ Email cannot be changed 🙇‍♀️</Text>
           <FormLabel color='gray.400' >Enter First Name</FormLabel>
           <Editable
             textAlign='center'
-            defaultValue='Rasengan ⚡️'
-            fontSize='2xl'
+            defaultValue={fname}
+            fontSize='md'
             isPreviewFocusable={false}
-            display={'flex'}
-            gap={'2rem'}
             justifyContent={'center'}
             alignItems={'center'}
           >
             <EditablePreview border='solid 2px' borderColor={"white"} borderRadius={"1rem"} color={'white'} w={"100%"} />
             {/* Here is the custom input */}
-            <Input as={EditableInput} border='5px' borderColor={"white"} color={'white'} w={"100%"} />
+            <Input as={EditableInput} border='5px' borderColor={"white"} color={'white'} w={"100%"} onChange={(e) => setF(e.target.value)} />
             <EditableControls border='5px' borderColor={"#ffb116"} />
           </Editable>
-          <FormLabel color='gray.400' >Enter First Name</FormLabel>
+          <FormLabel color='gray.400' >Enter Last Name</FormLabel>
           <Editable
             textAlign='center'
-            defaultValue='Rasengan ⚡️'
-            fontSize='2xl'
+            defaultValue={lname}
+            fontSize='md'
+            isPreviewFocusable={false}
+          >
+            <EditablePreview border='solid 2px' borderColor={"white"} borderRadius={"1rem"} color={'white'} w={"100%"} />
+
+            <Input as={EditableInput} border='5px' borderColor={"white"} color={'white'} w={"100%"} onChange={(e) => setL(e.target.value)} />
+            <EditableControls border='5px' borderColor={"#ffb116"} />
+          </Editable>
+          <FormLabel color='gray.400' >Enter Age</FormLabel>
+          <Editable
+            textAlign='center'
+            defaultValue={age}
+            fontSize='md'
             isPreviewFocusable={false}
           >
             <EditablePreview border='solid 2px' borderColor={"white"} borderRadius={"1rem"} color={'white'} w={"100%"} />
             {/* Here is the custom input */}
-            <Input as={EditableInput} border='5px' borderColor={"white"} color={'white'} w={"100%"} />
-            <EditableControls border='5px' borderColor={"#ffb116"} />
-          </Editable>
-          <FormLabel color='gray.400' >Enter First Name</FormLabel>
-          <Editable
-            textAlign='center'
-            defaultValue='Rasengan ⚡️'
-            fontSize='2xl'
-            isPreviewFocusable={false}
-          >
-            <EditablePreview border='solid 2px' borderColor={"white"} borderRadius={"1rem"} color={'white'} w={"100%"} />
-            {/* Here is the custom input */}
-            <Input as={EditableInput} border='5px' borderColor={"white"} color={'white'} w={"100%"} />
+            <Input as={EditableInput} border='5px' borderColor={"white"} color={'white'} w={"100%"} onChange={(e) => setAge(e.target.value)} />
             <EditableControls border='5px' borderColor={"#ffb116"} />
           </Editable>
 
           {/* Batch Data  */}
-          <Card
+          {batch && <Card
             direction={{ base: 'column', sm: 'row' }}
             overflow='hidden'
             variant='outline'
             backgroundColor='var(--color-gray-500)'
+            marginTop='12vh'
           >
             <Image
               objectFit='cover'
@@ -114,35 +245,37 @@ const ProfilePg = () => {
                       Batch Details
                     </Heading>
                     <Text pt='2' fontSize='sm'>
-                      View a summary of all your clients over the last month.
+                      {batch.batchname}
                     </Text>
                   </Box>
                   <Box>
                     <Heading size='xs' textTransform='uppercase'>
-                      Overview
+                      Payment Status :
                     </Heading>
                     <Text pt='2' fontSize='sm'>
-                      Check out the overview of your clients.
+                      {batch.payment_done && <Text>Done Successfully</Text>}
+                      {!batch.payment_done && <Text>Not Done Till Now</Text>}
                     </Text>
                   </Box>
                   <Box>
                     <Heading size='xs' textTransform='uppercase'>
-                      Analysis
+                      Batch Timings
                     </Heading>
                     <Text pt='2' fontSize='sm'>
-                      See a detailed analysis of all your business clients.
+                      {batch.starttime} - {batch.endtime}
                     </Text>
                   </Box>
                 </Stack>
               </CardBody>
 
               <CardFooter display={'flex'} flexDirection={'column'}>
-                <button className={st.btn2}>Batch Change Request </button>
+                <button className={st.btn2} onClick={changeRequest}>Batch Change Request </button>
                 <Text color={'white'}>Batch change can only occur at end of the month </Text>
               </CardFooter>
             </Stack>
-          </Card>
-          <button className={st.btn}>Update Details and Save </button>
+          </Card>}
+          {loading && <CircularProgress isIndeterminate color='green.300' />}
+          <button className={st.btn} onClick={updateDetails}>Update Details and Save </button>
         </Box>
       </div>
     </div>

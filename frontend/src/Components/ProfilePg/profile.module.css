@@ -30,6 +30,7 @@
     background: var(--color-primary);
     color: white;
     border-radius: 2rem;
+    margin-top: 19vh;
 }
 
 .btn:hover{

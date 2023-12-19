@@ -23,7 +23,7 @@ const GalleryPg = () => {
 	return (
 		<div>
 			<Navbar></Navbar>
-			<SectionHeader image={image} title="Gallery" color="black">Quisquam id tenetur adipisci nesciunt ipsum amet in quibusdam,
+			<SectionHeader image={image} title="Gallery" color="white">Quisquam id tenetur adipisci nesciunt ipsum amet in quibusdam,
 				architecto nostrum nobis, est, deserunt odio illum perspiciatis
 			</SectionHeader>
 			<section className={st.gallery}>
