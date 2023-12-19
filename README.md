@@ -62,3 +62,10 @@ Here is what you need to be able to run Cal.com.
 yarn dx
 ```
 
+## ER Diagram and Blueprint
+### ER Diagram
+<img src="/ProjectImages/ERDiagram.jpg" width="80%" height="80%">
+
+### Blueprint
+<img src="/ProjectImages/blueprint.jpg" width="80%" height="80%">
+  
