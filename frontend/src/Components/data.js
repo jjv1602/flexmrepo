@@ -53,7 +53,7 @@ export const values = [
 export const trainers = [
     {
         id: 2007,
-        image:"https://res.cloudinary.com/dxxu4powb/image/upload/v1678457241/trainer1_c7znsg.jpg",
+        image:"https://res.cloudinary.com/dxxu4powb/image/upload/v1678457613/trainer3_uvc1p2.jpg",
         name: 'George Paul',
         job: 'Aerobic Trainer',
         socials: ['https://instagram.com/', 'https://twitter.com/', 'https://facebook.com/', 'https://linkedin.com/']
