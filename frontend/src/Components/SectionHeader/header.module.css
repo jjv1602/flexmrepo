@@ -27,7 +27,14 @@
     width: 44%;
     margin: 0 auto;
     text-align: center;
-    color: var(--color-gray-100);
+    color: black;
+}
+.header__content2 {
+    position: relative;
+    width: 44%;
+    margin: 0 auto;
+    text-align: center;
+    color: white;
 }
 
 .header__content h2 {
