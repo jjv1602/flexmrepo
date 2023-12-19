@@ -1,8 +1,8 @@
 # Use an official Node.js runtime as a parent image
-FROM node:14
+FROM node:20-alpine
 
 # Set the working directory for the backend
-WORKDIR /app/backend
+WORKDIR /app
 
 # Copy backend package.json and package-lock.json to the backend directory
 COPY package*.json ./
@@ -24,7 +24,7 @@ WORKDIR /app
 COPY . .
 
 # Build the frontend
-WORKDIR /app/frontend
+WORKDIR /app
 RUN npm run build
 
 # Expose the port that the server will run on
