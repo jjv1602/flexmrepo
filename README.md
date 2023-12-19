@@ -45,20 +45,12 @@ Here is what you need to be able to run Cal.com.
 
    - Duplicate `.env.example` to `.env`
 
-6. Setup Node
-   If your Node version does not meet the project's requirements as instructed by the docs, "nvm" (Node Version Manager) allows using Node at the version required by the project:
-
-   ```sh
-   nvm use
+6. Run the project
+   In the root folder
+    ```sh
+   npm run dev
    ```
-
-   You first might need to install the specific version and then use it:
-
-   ```sh
-   nvm install && nvm use
-   ```
-
-   You can install nvm from [here](https://github.com/nvm-sh/nvm).
+   
 
 #### Quick start with Docker
 
