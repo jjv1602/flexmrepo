@@ -11,7 +11,13 @@ Here is what you need to be able to run Cal.com.
 - Node.js (Version: >=18.x)
 - PostgreSQL
 - Npm _(recommended)_
-
+### Technology Used
+* `Database` - PostgreSQL
+* Node.js
+* Express
+* React.js
+* Vite
+  
 ### Setup
 
 1. Clone the repo into a public GitHub repository (or fork https://github.com/jjv1602/flexmrepo.git). 
@@ -61,7 +67,8 @@ Here is what you need to be able to run Cal.com.
 ```sh
 yarn dx
 ```
-
+## Deployed Website Link
+- [x] <b> Deployed Website URL </b>-  [https://flexmrepo.vercel.app/](https://flexmrepo-dwox3sll1-jjv1602.vercel.app/login)
 ## ER Diagram and Blueprint
 ### ER Diagram
 <img src="/ProjectImages/ERDiagram.jpg" width="80%" height="80%">
