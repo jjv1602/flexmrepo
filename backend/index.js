@@ -7,6 +7,7 @@ const authRoutes=require('./routes/userRoutes');
 const batchRoutes=require('./routes/batchRoutes');
 const trainerRoutes=require('./routes/trainerRoutes');
 const bookingRoutes=require('./routes/bookingRoutes');
+const paymentRoutes=require('./routes/paymentRoutes');
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // Express.json()
@@ -16,6 +17,7 @@ app.use('/api/users',authRoutes)
 app.use('/api/trainer',trainerRoutes)
 app.use('/api/batch',batchRoutes)
 app.use('/api/booking',bookingRoutes)
+app.use('/api/payment',paymentRoutes)
 
 // ---------production ------------------
 if (process.env.NODE_ENV === 'production') {

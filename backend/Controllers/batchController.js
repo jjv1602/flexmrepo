@@ -41,7 +41,7 @@ const updateBatch = asyncHandler(async (req, res) => {
     try {
         
         // When adding keep avaiable seats= maximum_seats
-        await db.query('UPDATE batches Set starttime=$1,endtime=$2,max_seats=$3,available_seats=$4,trainer_id=$5) values($1,$2,$3,$4,$5)', [start, end, mx, mx, trainer_id]);
+        await db.query('UPDATE batches Set starttime=$1,endtime=$2,max_seats=$3,available_seats=$4,trainer_id=$5 values($1,$2,$3,$4,$5)', [start, end, mx, mx, trainer_id]);
         res.status(200).json({
             start: start,
             end: end,
