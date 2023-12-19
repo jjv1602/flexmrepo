@@ -55,10 +55,20 @@ Here is what you need to be able to run Cal.com.
 #### Quick start with Docker
 
 > - **Requires Docker and Docker Compose to be installed**
+1. Clone the repo into a public GitHub repository (or fork https://github.com/jjv1602/flexmrepo.git). 
 
-```sh
-yarn dx
-```
+   ```sh
+   git clone https://github.com/jjv1602/flexmrepo.git
+   ```
+2. Build the Docker Image:
+   ```sh
+   docker build -t your-app-name .
+   ```
+3. Run the Docker Container:
+    ```sh
+   docker run -p 5000:5000 -d your-app-name
+   ```
+   
 ## Deployed Website Link
 - [x] <b> Deployed Website URL </b>-  [https://flexmrepo.vercel.app/](https://flexmrepo-dwox3sll1-jjv1602.vercel.app/login)
 ## ER Diagram and Blueprint
