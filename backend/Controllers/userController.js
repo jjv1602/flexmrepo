@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async (req, res) => {
             throw new Error('User Already Exists');
         }
         const hashpwd = await bcrypt.hash(pwd, 12);
-        await db.query('Insert into users(fname,lname,email,pwd,age) values($1,$2,$3,$4)', [fname, lname, email, hashpwd, age]);
+        await db.query('Insert into users(fname,lname,email,pwd,age) values($1,$2,$3,$4,$5)', [fname, lname, email, hashpwd, age]);
 
         res.status(200).json({
             email: email,
@@ -52,7 +52,7 @@ const authUser = asyncHandler(async (req, res) => {
         }, process.env.TOKEN_SECRET, { expiresIn: '1d' });
 
         const totalbatch = await db.query('select * from bookings where user_id=$1', [user.rows[0].id]);
-        console.log(totalbatch);
+        
         const batchenrolled = totalbatch.rows.length;
         res
             .cookie('refreshToken', refreshToken, {

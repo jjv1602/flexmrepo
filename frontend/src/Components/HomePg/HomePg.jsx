@@ -7,10 +7,9 @@ import Values from './Values/Values';
 const HomePg = () => {
   const navigate = useNavigate();
   useEffect(()=>{
-    const userloggedin=localStorage.getItem('userInfo');
-    if(!userloggedin){
-      navigate('/');
-    }
+    if(!localStorage.getItem('userInfo')){
+      navigate("/login");
+    };
   },[]);
   return (
     <>

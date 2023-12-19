@@ -19,7 +19,7 @@ const ProfilePg = () => {
   const [lname, setL] = useState(JSON.parse(localStorage.getItem('userInfo')).lname);
   const [age, setAge] = useState(JSON.parse(localStorage.getItem('userInfo')).age);
   const [email, setEmail] = useState(JSON.parse(localStorage.getItem('userInfo')).email);
-  const [batch, setBatch] = useState();
+  const [batch, setBatch] = useState([]);
   const [loading, setLoading] = useState();
   const toast = useToast();
   function getLastDateOfMonth(year, month) {
@@ -129,9 +129,12 @@ const ProfilePg = () => {
   }
 
   useEffect(() => {
+    if(!localStorage.getItem('userInfo')){
+      navigate("/login");
+    };
     const fetchbatch = async () => {
       const bt = localStorage.getItem('batches');
-      console.log(bt);
+      
       if (bt == 1) {
         try {
           const id = JSON.parse(localStorage.getItem('userInfo')).id;
@@ -145,7 +148,7 @@ const ProfilePg = () => {
             "/api/booking/id",
             config
           );
-          console.log(data[0]);
+
           setBatch(data[0]);
 
         } catch (e) {
@@ -223,7 +226,7 @@ const ProfilePg = () => {
           </Editable>
 
           {/* Batch Data  */}
-          {batch && <Card
+          {batch.length!==0 && <Card
             direction={{ base: 'column', sm: 'row' }}
             overflow='hidden'
             variant='outline'

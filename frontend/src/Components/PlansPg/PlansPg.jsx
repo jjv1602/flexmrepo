@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../Navbar/Navbar'
 import SectionHeader from '../SectionHeader/SectionHeader'
 import image from '../../assets/plansbg/yogabg.jpg'
-import { plans } from '../data'
 import st from './plans.module.css';
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
@@ -26,7 +25,7 @@ const PlansPg = () => {
         setLoading(true);
         const user_id = JSON.parse(localStorage.getItem("userInfo")).userId;
         
-        console.log(user_id);
+        
         try {
           if (user_id == undefined || user_id == null || id == null || id == undefined) { throw new Error("Not Logged In"); }
           const config = {
@@ -62,6 +61,9 @@ const PlansPg = () => {
   }
   const [batch, setBatch] = useState([]);
   useEffect(() => {
+    if(!localStorage.getItem('userInfo')){
+      navigate("/login");
+    };
     const fetchbatch = async () => {
       try {
         const config = {
@@ -75,10 +77,10 @@ const PlansPg = () => {
           config
         );
         setBatch(data);
-        console.log(data);
+        
 
       } catch (error) {
-        console.log(error.message);
+        
         toast({
           title: error.message,
           isClosable: true,

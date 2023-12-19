@@ -14,7 +14,7 @@ const GalleryPg = () => {
 				const importedImage = await import(`../../assets/galleryimg/gallery${i}.jpg`);
 				imageImports.push(importedImage.default);
 			}
-			console.log(imageImports);
+			
 			setImages(imageImports);
 		}
 		fetchImages();

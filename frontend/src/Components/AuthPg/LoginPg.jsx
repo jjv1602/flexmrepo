@@ -37,7 +37,7 @@ const LoginPg = () => {
         navigate("/");
   
       } catch (error) {
-        console.log(error.message);
+        
         toast({
           title:error.message,
           isClosable: true,
