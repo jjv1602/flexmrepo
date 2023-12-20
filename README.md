@@ -62,13 +62,15 @@ Here is what you need to be able to run Cal.com.
    ```
 2. Build the Docker Image:
    ```sh
-   docker build -t your-app-name .
+   docker build -t your-image-name .
    ```
 3. Run the Docker Container:
     ```sh
-   docker run -p 5000:5000 -d your-app-name
+   docker run -p 5000:5000 -p 5173:5173 your-image-name
    ```
-   
+### SQL queries for Table Creation
+   Go to sqlqueries folder where you will find all the table creation code <br>
+   Run these queries for creating table inside your database 
 ## Deployed Website Link
 - [x] <b> Deployed Website URL </b>-  [https://flexmrepo.vercel.app/](https://flexmrepo-dwox3sll1-jjv1602.vercel.app/login)
 ## ER Diagram and Blueprint
