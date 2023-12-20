@@ -19,19 +19,16 @@ COPY frontend/package*.json ./
 # Install frontend dependencies
 RUN npm install
 
+COPY . .
+
 # Copy the rest of the backend and frontend code to the appropriate directories
 WORKDIR /app
 COPY . .
 
-# Build the frontend
 WORKDIR /app
-RUN npm run build
 
 # Expose the port that the server will run on
-EXPOSE 5000
-
-# Set environment variables for the backend
-ENV NODE_ENV production
+EXPOSE 5173 5000
 
 # Start the server
 CMD ["npm", "run","dev"]
