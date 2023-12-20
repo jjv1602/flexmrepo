@@ -5,10 +5,7 @@
 To get a local copy up and running, please follow these simple steps.
 
 ### Prerequisites
-
-Here is what you need to be able to run Cal.com.
-
-- Node.js (Version: >=18.x)
+- Node.js (Version: >=20.x)
 - PostgreSQL
 - Npm _(recommended)_
 ### Technology Used
@@ -68,6 +65,7 @@ Here is what you need to be able to run Cal.com.
     ```sh
    docker run -p 5000:5000 -p 5173:5173 your-image-name
    ```
+4. Finally run localhost:5173 in your device
 ### SQL queries for Table Creation
    Go to sqlqueries folder where you will find all the table creation code <br>
    Run these queries for creating table inside your database 
